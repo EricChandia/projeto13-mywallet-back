@@ -16,8 +16,9 @@ mongoClient.connect(() => {
 export async function getRecords(req, res){
     const { authorization } = req.headers;
     const token = authorization?.replace('Bearer ', '');
+    const userLogged = res.locals.user;
   
-    const userLogged = await checkIfUserLogged(req.headers);
+    //const userLogged = await checkIfUserLogged(req.headers);
     if (userLogged === 400 || userLogged === 401)
      {
       res.sendStatus(userLogged);

@@ -7,6 +7,7 @@ dotenv.config();
 import { signUp, signIn, getCredentials } from './controller/authController.js';
 import { newIn } from './controller/newInController.js';
 import { getRecords } from './controller/recordsController.js';
+import { validateUserToken } from './middlewares/validateUserToken.js';
 
 const mongoClient = new MongoClient(process.env.MONGO_URI);
 let db;
@@ -21,8 +22,8 @@ app.use(cors());
 app.post("/sign-up", signUp);
 app.post("/sign-in", signIn);
 app.get("/meus-dados", getCredentials);
-app.post("/newIn", newIn);
-app.get("/getRecords", getRecords);
+app.post("/newIn", validateUserToken, newIn);
+app.get("/getRecords", validateUserToken, getRecords);
 
 
 

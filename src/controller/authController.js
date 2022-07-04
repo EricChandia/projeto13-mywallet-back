@@ -77,36 +77,34 @@ export async function getCredentials(req, res){
 
 
 export async function checkIfUserLogged(headers){
-const { authorization } = headers;
-const token = authorization?.replace('Bearer ', '');
+  const { authorization } = headers;
+  const token = authorization?.replace('Bearer ', '');
 
-if(!token)
-{
-  console.log("caiu aqui3");
-  return 400;
-}
-
-
-const session = await db.collection("sessions").findOne({ token });
+  if(!token)
+  {
+    console.log("caiu aqui3");
+    return 400;
+  }
 
 
-if (!session) {
-  //console.log("caiu aqui1");
-  return 401;
-}
+  const session = await db.collection("sessions").findOne({ token });
 
 
-const user = await db.collection("users").findOne({ 
-  _id: session.userId 
-});
-
-if(user) {
-  delete user.password;
-  return(user);
-} else {
-  //console.log("caiu aqui");
-  return 401;
-}
+  if (!session) {
+    //console.log("caiu aqui1");
+    return 401;
+  }
 
 
+  const user = await db.collection("users").findOne({ 
+    _id: session.userId 
+  });
+
+  if(user) {
+    delete user.password;
+    return(user);
+  } else {
+    //console.log("caiu aqui");
+    return 401;
+  }
 }
